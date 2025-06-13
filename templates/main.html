@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page - Voice Order</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; background-color: #f2f2f2; color: #333; }
+        h1, h2 { text-align: center; }
+        .center { text-align: center; margin-top: 30px; }
+        .btn { padding: 12px 24px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .btn:hover { background-color: #45a049; }
+        table { margin: 30px auto; border-collapse: collapse; width: 80%; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 18px; text-align: center; border-bottom: 1px solid #ddd; }
+        th { background-color: #4CAF50; color: white; }
+        .total-row { font-weight: bold; background-color: #f9f9f9; }
+        .status-message { padding: 15px; margin: 20px auto; background: #e3f2fd; border-radius: 5px; width: 80%; text-align: center; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+        .order-history { margin-top: 40px; }
+        .order { margin-bottom: 30px; background: white; padding: 20px; border-radius: 6px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .timestamp { color: #7f8c8d; font-size: 0.9em; text-align: center; }
+        .order-header { margin-bottom: 10px; }
+        #historyContainer { max-width: 900px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, {{ current_user.username if current_user else "Guest" }}</h1>
+    <div class="center">
+        <form action="{{ url_for('process_order') }}" method="POST">
+            <button type="submit" class="btn">🎤 Start Order</button>
+        </form>
+    </div>
+
+    <!-- Latest Bill Display -->
+    {% if bill and bill['items'] %}
+        <div id="latestBill">
+            <h2>Latest Order</h2>
+            <p class="timestamp">Ordered on: {{ bill.timestamp }}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Price/Unit</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in bill['items'] %}
+                        <tr>
+                            <td>{{ item.item }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.unit }}</td>
+                            <td>₹{{ "%.2f"|format(item.unit_price) }}</td>
+                            <td>₹{{ "%.2f"|format(item.total) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="4">Grand Total</td>
+                        <td>₹{{ "%.2f"|format(bill.total) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    {% elif bill %}
+        <p style="text-align:center;">No recent orders found.</p>
+    {% endif %}
+
+    <!-- Order History Display -->
+    <div id="historyContainer" class="order-history">
+        <h2>Order History</h2>
+        {% if history %}
+            {% for order in history %}
+                <div class="order">
+                    <div class="order-header">
+                        <p class="timestamp">Ordered on: {{ order.timestamp }}</p>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                                <th>Price/Unit</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order['items'] %}
+                                <tr>
+                                    <td>{{ item.item }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.unit }}</td>
+                                    <td>₹{{ "%.2f"|format(item.unit_price) }}</td>
+                                    <td>₹{{ "%.2f"|format(item.total) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="4">Grand Total</td>
+                                <td>₹{{ "%.2f"|format(order.total) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align:center;">No order history available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

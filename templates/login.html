@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login / Signup</title>
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 900px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .form-section {
+      flex: 1;
+      padding: 40px 50px;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Separate login and signup visually */
+    .form-section.login {
+      background-color: #fff;
+    }
+
+    .form-section.signup {
+      background-color: #f0f4ff;
+      border-left: 1px solid #d0d7ff;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-weight: 700;
+      color: #1a237e;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #3f51b5;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #3f51b5;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #303f9f;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .container {
+        flex-direction: column;
+        max-width: 400px;
+      }
+      .form-section.signup {
+        border-left: none;
+        border-top: 1px solid #d0d7ff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="form-section login">
+      <h2>Login</h2>
+      <form method="POST" action="{{ url_for('auth') }}">
+        <input type="hidden" name="action" value="login" />
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" name="username" required />
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" required />
+        <button type="submit">Login</button>
+      </form>
+    </section>
+
+    <section class="form-section signup">
+      <h2>Signup</h2>
+      <form method="POST" action="{{ url_for('auth') }}">
+        <input type="hidden" name="action" value="signup" />
+        <label for="signup-username">Username</label>
+        <input type="text" id="signup-username" name="username" required />
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" name="password" required />
+        <!-- Add more signup fields here if needed -->
+        <button type="submit">Signup</button>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

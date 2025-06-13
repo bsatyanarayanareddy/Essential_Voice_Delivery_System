@@ -1,0 +1,11 @@
+Flask
+googletrans==4.0.0rc1
+gTTS
+pygame
+SpeechRecognition
+spacy
+pandas
+word2number
+inflect
+fuzzywuzzy
+python-Levenshtein

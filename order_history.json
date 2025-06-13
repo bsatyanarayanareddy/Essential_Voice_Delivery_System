@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2025-06-09T22:30:45.059496",
+    "items": [
+      {
+        "item": "Made",
+        "quantity": 10.0,
+        "unit": "kg",
+        "unit_price": 0.0,
+        "total": 0.0,
+        "confidence": 0.0,
+        "status": "not_found"
+      }
+    ],
+    "total": 0.0
+  }
+]
